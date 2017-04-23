@@ -46,6 +46,8 @@ PlanetInfo = false;
 
 Drag = false;
 
+Materials = ds_map_create( );
+
 Width = floor(room_width / CellW - 0.5);
 Height = floor(room_height / CellH2);
 Width = 24;//floor(room_width / CellW - 0.5);
@@ -206,6 +208,9 @@ if (mouse_wheel_down( )) {
     if (PlanetInfo) {
         PlanetInfo = false;
         NearestI = undefined;
+        with (obj_material) {
+            instance_destroy( );
+        }
         new_scale = 1;
     }
     var xx = PosX + (mouse_x - room_width / 2) / Scale;
@@ -271,9 +276,11 @@ if (mouse_check_button_pressed(mb_left)) {
                             breaf = noone;
                         }
                         PlanetInfo = true;
+                        VisibleMaterials(i, j);
                         NearestI = i;
                         NearestJ = j;
                     } else if (PlanetsAvailable &gt; PlanetsUsed) {
+                        Materials[?i * Height + j] = max(4 - PlanetsUsed, irandom(6));
                         VisGrid[#i,j] = 2;
                         for (var d = 0; d &lt; 6; d++) {
                             var xx = i + hex_dx(i, j, d);
@@ -412,6 +419,7 @@ if (Scale &gt;= 3 &amp;&amp; PlanetInfo == false) {
             }
         }
     }
+    VisibleMaterials(NearestI, NearestJ);
 }
 
 if (PlanetInfo) {

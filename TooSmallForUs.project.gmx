@@ -13,6 +13,7 @@
     <sprite>sprites\spr_unknownPlanet</sprite>
     <sprite>sprites\spr_buildPlace</sprite>
     <sprite>sprites\spr_house</sprite>
+    <sprite>sprites\spr_material</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
@@ -26,6 +27,7 @@
     <script>scripts\getPosX.gml</script>
     <script>scripts\getPosY.gml</script>
     <script>scripts\script6.gml</script>
+    <script>scripts\VisibleMaterials.gml</script>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\glsl_light.shader</shader>
@@ -39,6 +41,7 @@
     <object>objects\obj_portalBreaf</object>
     <object>objects\obj_planetGenerator</object>
     <object>objects\obj_breafBuild</object>
+    <object>objects\obj_material</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
