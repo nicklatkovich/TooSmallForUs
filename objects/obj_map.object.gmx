@@ -424,6 +424,18 @@ for (var i = xs; i &lt; xf; i++) {
                         d3d_transform_add_translation(xx, yy, 0);
                         d3d_draw_ellipsoid(-256, -256, -256, 256, 256, 256, surface_get_texture(obj_planetGenerator.Surf), 1, 1, floor(sqrt(Scale) * 16));
                         d3d_transform_set_identity( );
+                        d3d_set_culling(false);
+                        surface_reset_target( );
+                        if (is_undefined(NearestI) == false &amp;&amp; i == NearestI &amp;&amp; j == NearestJ) {
+                            for (var d = 0; d &lt; 12; d++) {
+                                var x1 = i + hex_ddx(i, j, d);
+                                var y1 = j + hex_ddy(d);
+                                if (Grid[#x1,y1] != 2) {
+                                    var dir = point_direction(xx, yy, getPosX(x1, y1), getPosY(x1, y1));
+                                    draw_sprite_ext(spr_buildPlace, 0, xx + lengthdir_x(CellH * Scale, dir), yy + lengthdir_y(CellH * Scale, dir), CellH * Scale / 256, CellH * Scale / 256, dir, c_white, 0.5);
+                                }
+                            }
+                        }
                     } else {
                         d3d_transform_add_rotation_z(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 1000);
                         d3d_transform_add_rotation_x(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 2111);
@@ -434,9 +446,9 @@ for (var i = xs; i &lt; xf; i++) {
                         d3d_transform_add_translation(xx, yy, 0);
                         d3d_draw_block(-256, -256, -256, 256, 256, 256, surface_get_texture(obj_planetGenerator.Surf), 1, 1);
                         d3d_transform_set_identity( );
+                        d3d_set_culling(false);
+                        surface_reset_target( );
                     }
-                    d3d_set_culling(false);
-                    surface_reset_target( );
                 } else {
                     random_set_seed(i * Width + j);
                     var cl = make_colour_rgb(floor(random(1) * 256), floor(random(1) * 256), floor(random(1) * 256));
