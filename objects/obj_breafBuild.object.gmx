@@ -3,11 +3,82 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-5</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+xx = room_width / 2 - 96;
+yy = room_height / 2 - 48;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+if (mouse_check_button_pressed(mb_left)) {
+    var mx = mouse_x - xx;
+    var my = mouse_y - yy;
+    
+    if (my &gt; 0 &amp;&amp; my &lt; 64 &amp;&amp; mx &gt; 0 &amp;&amp; mx &lt; 192) {
+        var d = obj_map.BreafBuildD;
+        var key = obj_map.NearestI * obj_map.Height * 12 + obj_map.NearestJ * 12 + d;
+        switch (mx div 64) {
+        case 0:
+            obj_map.Builds[?key] = "House";
+            obj_map.BuildProgress[?key] = 5;
+            obj_map.breaf = noone;
+            instance_destroy( );
+            break;
+        case 2:
+            obj_map.breaf = noone;
+            instance_destroy( );
+            break;
+        }
+    }
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
@@ -26,7 +97,19 @@
           <argument>
             <kind>1</kind>
             <string>
-draw_sprite(spr_buildPlace, 0, room_width / 2, room_height / 2);
+draw_set_alpha(0.5);
+draw_set_color(c_black);
+draw_rectangle(xx, yy, xx + 192, yy + 96, false);
+draw_set_alpha(1.0);
+draw_set_color(c_white);
+draw_sprite(spr_icoHouse, 0, xx, yy);
+draw_text(xx + 32, yy + 80, "House");
+draw_sprite(spr_icoEat, 0, xx + 64, yy);
+draw_text(xx + 96, yy + 80, "Farm");
+draw_sprite(spr_close, 0, xx + 128, yy);
+draw_text(xx + 160, yy + 80, "Cancel");
+
+//draw_sprite(spr_buildPlace, 0, room_width / 2, room_height / 2);
 
 </string>
           </argument>

@@ -14,6 +14,8 @@
     <sprite>sprites\spr_buildPlace</sprite>
     <sprite>sprites\spr_house</sprite>
     <sprite>sprites\spr_material</sprite>
+    <sprite>sprites\spr_icoHouse</sprite>
+    <sprite>sprites\spr_icoEat</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>

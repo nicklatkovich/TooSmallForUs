@@ -253,8 +253,12 @@ if (mouse_check_button_pressed(mb_left)) {
                     if (Grid[#i + hex_ddx(i, j, d),j + hex_ddy(d)] != 2) {
                         var key = i * Height * 12 + j * 12 + d;
                         if (ds_map_exists(Builds, key) == false) {
-                            Builds[?key] = "House";
-                            BuildProgress[?key] = 5;
+/*                            Builds[?key] = "House";
+                            BuildProgress[?key] = 5;*/
+                            if (breaf == noone) {
+                                BreafBuildD = d;
+                                breaf = instance_create(0, 0, obj_breafBuild);
+                            }
                         } else {
                             var mat_key = i * Height + j;
                             if (BuildProgress[?key] &gt; 0 &amp;&amp; Materials[?mat_key] &gt; 0) {
