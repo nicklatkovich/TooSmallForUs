@@ -29,6 +29,9 @@
 xx = room_width / 2 - 64;
 yy = room_height / 2 - 32;
 
+show_debug_message("Portal Breafing Creating");
+
+
 </string>
           </argument>
         </arguments>
@@ -56,15 +59,16 @@ if (mouse_check_button_pressed(mb_left)) {
     if (mouse_y &gt; yy &amp;&amp; mouse_y &lt; yy + 64) {
         if (mouse_x &gt; xx) {
             if (mouse_x &lt; xx + 64) {
-                var c = instance_create(obj_map.NearestI * obj_map.CellW + obj_map.CellSize * (obj_map.NearestJ % 2) + obj_map.CellSize, obj_map.NearestJ * obj_map.CellH2 + obj_map.CellH, obj_creep);
-                with (c) {
-                    xx = obj_map.NearestI;
-                    yy = obj_map.NearestJ;
-                    XX = obj_map.PosX;
-                    YY = obj_map.PosY;
+                if (obj_map.CreepsUsed &lt; obj_map.CreepsAvailable) {
+                    var c = instance_create(obj_map.NearestI * obj_map.CellW + obj_map.CellSize * (obj_map.NearestJ % 2) + obj_map.CellSize, obj_map.NearestJ * obj_map.CellH2 + obj_map.CellH, obj_creep);
+                    with (c) {
+                        xx = obj_map.NearestI;
+                        yy = obj_map.NearestJ;
+                        XX = obj_map.PosX;
+                        YY = obj_map.PosY;
+                    }
+                    obj_map.CreepsUsed++;
                 }
-                obj_map.breaf = noone;
-                instance_destroy( );
             } else if (mouse_x &lt; xx + 128) {
                 obj_map.PlanetInfo = false;
                 obj_map.Scale = 2.99;
@@ -99,7 +103,12 @@ if (mouse_check_button_pressed(mb_left)) {
           <argument>
             <kind>1</kind>
             <string>
-draw_sprite(spr_initDron, 0, xx, yy);
+if (obj_map.CreepsUsed &lt; obj_map.CreepsAvailable) {
+    draw_sprite(spr_initDron, 0, xx, yy);
+} else {
+    draw_sprite_ext(spr_initDron, 0, xx, yy, 1, 1, 0, c_dkgray, 1.0);
+    draw_sprite(spr_close, 0, xx, yy);
+}
 draw_sprite(spr_close, 0, xx + 64, yy);
 
 </string>

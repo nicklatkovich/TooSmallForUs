@@ -10,6 +10,7 @@
     <sprite>sprites\spr_close</sprite>
     <sprite>sprites\spr_creeps</sprite>
     <sprite>sprites\spr_planets</sprite>
+    <sprite>sprites\spr_unknownPlanet</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>
