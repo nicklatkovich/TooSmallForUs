@@ -28,11 +28,11 @@
             <string>
 dir = random(360);
 pitch = random(360);
-dir_spd = random(10) - 5;
-pitch_spd = random(10) - 5;
+dir_spd = (random(0.5) + 0.5) * choose(1, -1);
+pitch_spd = (random(0.5) + 0.5) * choose(1, -1);
 
 angle = random(360);
-angle_spd = random(10) - 5;
+angle_spd = (random(0.5) + 0.5) * choose(1, -1);
 
 xx = undefined;
 yy = undefined;
@@ -62,6 +62,7 @@ yy = undefined;
             <string>
 dir += dir_spd;
 pitch += pitch_spd;
+angle += angle_spd;
 
 </string>
           </argument>

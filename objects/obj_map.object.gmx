@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>
 PlanetsAvailable = 4;
-PlanetsUsed = 1;
+PlanetsUsed = 0;
 
 CreepsAvailable = 4;
 CreepsUsed = 0;
@@ -248,7 +248,7 @@ if (mouse_check_button_pressed(mb_left)) {
                 var dist = point_distance(mouse_x, mouse_y, xx, yy);
                 if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2 &amp;&amp; dist &gt; CellH * Scale &amp;&amp; dist &lt; 1.5 * CellH * Scale) {
                     var dir = point_direction(xx, yy, mouse_x, mouse_y);
-                    var d = (dir + 15) div 30 mod 12;
+                    var d = (dir + 30) div 60 * 2 mod 12;
                     if (Grid[#i + hex_ddx(i, j, d),j + hex_ddy(d)] != 2) {
                         var key = i * Height * 12 + j * 12 + d;
                         if (ds_map_exists(Builds, key)) {
@@ -280,7 +280,7 @@ if (mouse_check_button_pressed(mb_left)) {
                         NearestI = i;
                         NearestJ = j;
                     } else if (PlanetsAvailable &gt; PlanetsUsed) {
-                        Materials[?i * Height + j] = max(4 - PlanetsUsed, irandom(6));
+                        Materials[?i * Height + j] = max(8 - PlanetsUsed, irandom(6));
                         VisGrid[#i,j] = 2;
                         for (var d = 0; d &lt; 6; d++) {
                             var xx = i + hex_dx(i, j, d);
@@ -461,7 +461,7 @@ for (var i = xs; i &lt; xf; i++) {
                         d3d_set_culling(false);
                         surface_reset_target( );
                         if (is_undefined(NearestI) == false &amp;&amp; i == NearestI &amp;&amp; j == NearestJ) {
-                            for (var d = 0; d &lt; 12; d++) {
+                            for (var d = 0; d &lt; 12; d += 2) {
                                 var x1 = i + hex_ddx(i, j, d);
                                 var y1 = j + hex_ddy(d);
                                 if (Grid[#x1,y1] != 2) {
