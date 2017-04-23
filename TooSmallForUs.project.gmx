@@ -8,6 +8,8 @@
   <sprites name="sprites">
     <sprite>sprites\spr_initDron</sprite>
     <sprite>sprites\spr_close</sprite>
+    <sprite>sprites\spr_creeps</sprite>
+    <sprite>sprites\spr_planets</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>

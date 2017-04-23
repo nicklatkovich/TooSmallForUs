@@ -29,6 +29,12 @@
 PlanetsAvailable = 4;
 PlanetsUsed = 1;
 
+CreepsAvailable = 4;
+CreepsUsed = 0;
+
+NearestI = undefined;
+NearestJ = undefined;
+
 randomize( );
 
 CellSize = 64;
@@ -194,14 +200,23 @@ if (mouse_check_button(mb_right)) {
 }
 
 if (mouse_wheel_down( )) {
-    PlanetInfo = false;
-    NearestI = undefined;
     var new_scale = Scale / 1.3;
+    if (PlanetInfo) {
+        PlanetInfo = false;
+        NearestI = undefined;
+        new_scale = 1;
+    }
     var xx = PosX + (mouse_x - room_width / 2) / Scale;
     var yy = PosY + (mouse_y - room_height / 2) / Scale;
     TPosX = xx - (mouse_x - room_width / 2) / new_scale;
     TPosY = yy - (mouse_y - room_height / 2) / new_scale;
     TScale = new_scale;
+    if (breaf != noone) {
+        with (breaf) {
+            instance_destroy( );
+        }
+        breaf = noone;
+    }
 }
 if (mouse_wheel_up( )) {
     var new_scale = Scale * 1.3;
@@ -222,11 +237,13 @@ if (breaf == noone) {
         for (var i = xs; i &lt; xf; i++) {
             for (var j = ys; j &lt; yf; j++) {
                 if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2 &amp;&amp; point_distance(mouse_x, mouse_y, getPosX(i, j), getPosY(i, j)) &lt; CellH * Scale) {
-                    if (i == x_start &amp;&amp; j == y_start) {
-                        breaf = instance_create(0, 0, obj_portalBreaf);
-                        SelX = i;
-                        SelY = j;
-                    } else if (VisGrid[#i,j] == 2) {
+                    if (VisGrid[#i,j] == 2) {
+                        if (breaf != noone) {
+                            with (breaf) {
+                                instance_destroy( );
+                            }
+                            breaf = noone;
+                        }
                         PlanetInfo = true;
                         NearestI = i;
                         NearestJ = j;
@@ -283,7 +300,28 @@ Scale += (TScale - Scale) / 10;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*
+            <string>
+draw_set_colour(c_black);
+draw_set_alpha(0.5);
+draw_rectangle(0, 0, 64, 96, false);
+draw_set_alpha(1);
+draw_set_color(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+if (PlanetsUsed &lt; PlanetsAvailable) {
+    draw_sprite(spr_planets, 0, 0, 0);
+} else {
+    draw_sprite_ext(spr_planets, 0, 0, 0, 1, 1, 0, c_dkgray, 1.0);
+}
+draw_text(32, 80, string(PlanetsUsed) + "/" + string(PlanetsAvailable));
+if (CreepsUsed &lt; CreepsAvailable) {
+    draw_sprite(spr_creeps, 0, 64, 0);
+} else {
+    draw_sprite_ext(spr_close, 0, 64, 0, 1, 1, 0, c_dkgray, 1.0);
+}
+draw_text(96, 80, string(CreepsUsed) + "/" + string(CreepsAvailable));
+
+/*
 draw_set_color(c_black);
 draw_set_alpha(0.5);
 draw_rectangle(0, 0, string_width(FPSOut), string_height(FPSOut), false);
@@ -319,37 +357,42 @@ surface_set_target(surf);
 draw_clear_alpha(c_black, 1);
 surface_reset_target( );
 
-if (Scale &gt;= 3 || PlanetInfo) {
-    if (ScalePrev &lt; 3 &amp;&amp; is_undefined(NearestI)) {
-        NearestI = undefined;
-        NearestJ = undefined;
-        MinDist = undefined;
-        XX = 0;
-        YY = 0;
-        for (var i = xs; i &lt; xf; i++) {
-            for (var j = ys; j &lt; yf; j++) {
-                if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2) {
-                   // if (VisGrid[#i,j] == 2) {
-                        var xx = getPosX(i, j) + PosX * Scale// (i * obj_map.CellW + obj_map.CellSize * (j % 2) + obj_map.CellSize) * obj_map.Scale;
-                        var yy = getPosY(i, j) + PosY * Scale// (j * obj_map.CellH2 + obj_map.CellH) * obj_map.Scale;
-                        var cam_x = PosX * Scale + room_width / 2;
-                        var cam_y = PosY * Scale + room_height / 2;
-                        var dist = point_distance(cam_x, cam_y, xx, yy);
-                        if (is_undefined(NearestI) || MinDist &gt; dist) {
-                            NearestI = i;
-                            NearestJ = j;
-                            MinDist = dist;
-                            XX = xx;
-                            YY = yy;
-                        }
-                   // }
-                }
+if (Scale &gt;= 3 &amp;&amp; PlanetInfo == false) {
+    PlanetInfo = true;
+    NearestI = undefined;
+    NearestJ = undefined;
+    MinDist = undefined;
+    XX = 0;
+    YY = 0;
+    for (var i = xs; i &lt; xf; i++) {
+        for (var j = ys; j &lt; yf; j++) {
+            if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2) {
+               // if (VisGrid[#i,j] == 2) {
+                    var xx = getPosX(i, j) + PosX * Scale// (i * obj_map.CellW + obj_map.CellSize * (j % 2) + obj_map.CellSize) * obj_map.Scale;
+                    var yy = getPosY(i, j) + PosY * Scale// (j * obj_map.CellH2 + obj_map.CellH) * obj_map.Scale;
+                    var cam_x = PosX * Scale + room_width / 2;
+                    var cam_y = PosY * Scale + room_height / 2;
+                    var dist = point_distance(cam_x, cam_y, xx, yy);
+                    if (is_undefined(NearestI) || MinDist &gt; dist) {
+                        NearestI = i;
+                        NearestJ = j;
+                        MinDist = dist;
+                        XX = xx;
+                        YY = yy;
+                    }
+               // }
             }
         }
     }
+}
+
+if (PlanetInfo) {
     TPosX = NearestI * obj_map.CellW + obj_map.CellSize * (NearestJ % 2) + obj_map.CellSize;
     TPosY = NearestJ * obj_map.CellH2 + obj_map.CellH;
     TScale = 3;
+    if (NearestI == x_start &amp;&amp; NearestJ == y_start &amp;&amp; breaf == noone) {
+        breaf = instance_create(0, 0, obj_portalBreaf);
+    }
 }
 for (var i = xs; i &lt; xf; i++) {
     for (var j = ys; j &lt; yf; j++) {

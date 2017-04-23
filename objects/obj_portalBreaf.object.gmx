@@ -8,6 +8,32 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+xx = room_width / 2 - 64;
+yy = room_height / 2 - 32;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -27,20 +53,25 @@
             <kind>1</kind>
             <string>
 if (mouse_check_button_pressed(mb_left)) {
-    if (mouse_y &lt; 64) {
-        if (mouse_x &lt; 64) {
-            var c = instance_create(getPosX(obj_map.SelX, obj_map.SelY) / obj_map.Scale + obj_map.PosX, getPosY(obj_map.SelX, obj_map.SelY) / obj_map.Scale + obj_map.PosY, obj_creep);
-            with (c) {
-                xx = obj_map.SelX;
-                yy = obj_map.SelY;
-                XX = (x - obj_map.PosX) * obj_map.Scale;
-                YY = (y - obj_map.PosY) * obj_map.Scale;
+    if (mouse_y &gt; yy &amp;&amp; mouse_y &lt; yy + 64) {
+        if (mouse_x &gt; xx) {
+            if (mouse_x &lt; xx + 64) {
+                var c = instance_create(obj_map.NearestI * obj_map.CellW + obj_map.CellSize * (obj_map.NearestJ % 2) + obj_map.CellSize, obj_map.NearestJ * obj_map.CellH2 + obj_map.CellH, obj_creep);
+                with (c) {
+                    xx = obj_map.NearestI;
+                    yy = obj_map.NearestJ;
+                    XX = obj_map.PosX;
+                    YY = obj_map.PosY;
+                }
+                obj_map.breaf = noone;
+                instance_destroy( );
+            } else if (mouse_x &lt; xx + 128) {
+                obj_map.PlanetInfo = false;
+                obj_map.Scale = 2.99;
+                obj_map.TScale = 1;
+                obj_map.breaf = noone;
+                instance_destroy( );
             }
-            obj_map.breaf = noone;
-            instance_destroy( );
-        } else if (mouse_x &lt; 128) {
-            obj_map.breaf = noone;
-            instance_destroy( );
         }
     }
 }
@@ -68,8 +99,8 @@ if (mouse_check_button_pressed(mb_left)) {
           <argument>
             <kind>1</kind>
             <string>
-draw_sprite(spr_initDron, 0, 0, 0);
-draw_sprite(spr_close, 0, 64, 0);
+draw_sprite(spr_initDron, 0, xx, yy);
+draw_sprite(spr_close, 0, xx + 64, yy);
 
 </string>
           </argument>
