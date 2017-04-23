@@ -526,6 +526,14 @@ for (var i = xs; i &lt; xf; i++) {
                                                 max_progress = 5;
                                             }
                                             break;
+                                        case "Corral":
+                                            spr = spr_corral;
+                                            progress = BuildProgress[?key];
+                                            if (progress &gt; 0) {
+                                                img = 1;
+                                                max_progress = 5;
+                                            }
+                                            break;
                                         case "Null": spr = spr_buildPlace; break;
                                         }
                                     } else {

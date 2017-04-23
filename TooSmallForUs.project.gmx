@@ -16,6 +16,8 @@
     <sprite>sprites\spr_material</sprite>
     <sprite>sprites\spr_icoHouse</sprite>
     <sprite>sprites\spr_icoEat</sprite>
+    <sprite>sprites\spr_corral</sprite>
+    <sprite>sprites\sprite11</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\background0</background>

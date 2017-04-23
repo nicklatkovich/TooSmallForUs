@@ -66,6 +66,12 @@ if (mouse_check_button_pressed(mb_left)) {
             obj_map.breaf = noone;
             instance_destroy( );
             break;
+        case 1:
+            obj_map.Builds[?key] = "Corral";
+            obj_map.BuildProgress[?key] = 4;
+            obj_map.breaf = noone;
+            instance_destroy( );
+            break;
         case 2:
             obj_map.breaf = noone;
             instance_destroy( );
@@ -97,15 +103,17 @@ if (mouse_check_button_pressed(mb_left)) {
           <argument>
             <kind>1</kind>
             <string>
+draw_set_font(font12);
+
 draw_set_alpha(0.5);
 draw_set_color(c_black);
 draw_rectangle(xx, yy, xx + 192, yy + 96, false);
 draw_set_alpha(1.0);
 draw_set_color(c_white);
 draw_sprite(spr_icoHouse, 0, xx, yy);
-draw_text(xx + 32, yy + 80, "House");
+draw_text(xx + 32, yy + 80, "House#P + 2");
 draw_sprite(spr_icoEat, 0, xx + 64, yy);
-draw_text(xx + 96, yy + 80, "Farm");
+draw_text(xx + 96, yy + 80, "Corral#F + 3");
 draw_sprite(spr_close, 0, xx + 128, yy);
 draw_text(xx + 160, yy + 80, "Cancel");
 
