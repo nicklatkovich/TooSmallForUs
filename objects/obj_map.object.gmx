@@ -346,11 +346,11 @@ Scale += (TScale - Scale) / 20;
           <argument>
             <kind>1</kind>
             <string>
-background_xscale[0] = Scale / 3;
-background_yscale[0] = Scale / 3;
+background_xscale[0] = Scale / 4;
+background_yscale[0] = Scale / 4;
 
-background_x[0] = AppSurf.Width / 2 - Scale / 3 * background_width[0];
-background_y[0] = AppSurf.Height / 2 - Scale / 3 * background_height[0];
+background_x[0] = AppSurf.Width / 2 - Scale / 4 * background_width[0];
+background_y[0] = AppSurf.Height / 2 - Scale / 4 * background_height[0];
 
 </string>
           </argument>
