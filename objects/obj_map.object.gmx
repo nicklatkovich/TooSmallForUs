@@ -213,11 +213,12 @@ if (mouse_wheel_down( )) {
             instance_destroy( );
         }
         new_scale = 1;
+    } else {
+        var xx = PosX + (mouse_x - room_width / 2) / Scale;
+        var yy = PosY + (mouse_y - room_height / 2) / Scale;
+        TPosX = xx - (mouse_x - room_width / 2) / new_scale;
+        TPosY = yy - (mouse_y - room_height / 2) / new_scale;
     }
-    var xx = PosX + (mouse_x - room_width / 2) / Scale;
-    var yy = PosY + (mouse_y - room_height / 2) / Scale;
-    TPosX = xx - (mouse_x - room_width / 2) / new_scale;
-    TPosY = yy - (mouse_y - room_height / 2) / new_scale;
     TScale = new_scale;
     if (breaf != noone) {
         with (breaf) {
