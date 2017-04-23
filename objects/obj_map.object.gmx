@@ -437,7 +437,7 @@ surface_set_target(surf);
 draw_clear_alpha(c_black, 1);
 surface_reset_target( );
 
-if (Scale &gt;= 3 &amp;&amp; PlanetInfo == false) {
+if (Scale &gt;= 4 &amp;&amp; PlanetInfo == false) {
     PlanetInfo = true;
     NearestI = undefined;
     NearestJ = undefined;
@@ -470,7 +470,7 @@ if (Scale &gt;= 3 &amp;&amp; PlanetInfo == false) {
 if (PlanetInfo) {
     TPosX = NearestI * obj_map.CellW + obj_map.CellSize * (NearestJ % 2) + obj_map.CellSize;
     TPosY = NearestJ * obj_map.CellH2 + obj_map.CellH;
-    TScale = 3;
+    TScale = 4;
     if (NearestI == x_start &amp;&amp; NearestJ == y_start &amp;&amp; breaf == noone) {
         breaf = instance_create(0, 0, obj_portalBreaf);
     }
