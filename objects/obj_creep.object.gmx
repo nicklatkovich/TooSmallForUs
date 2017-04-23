@@ -37,6 +37,7 @@ spd = 0.0001;
 XX = 0;
 YY = 0;
 
+State = 0;
 
 </string>
           </argument>
@@ -62,6 +63,21 @@ YY = 0;
             <kind>1</kind>
             <string>
 if (move) {
+    var mat_key = xx * obj_map.Height + yy;
+    if (State == 0) {
+        if (obj_map.Materials[?mat_key] &gt; 0) {
+            State = 1;
+            obj_map.Materials[?mat_key]--;
+            if (is_undefined(obj_map.NearestI) == false &amp;&amp; obj_map.NearestI == xx &amp;&amp; obj_map.NearestJ == yy) {
+                
+            }
+        }
+    } else if (State == 1) {
+        if (obj_map.Materials[?mat_key] == 0) {
+            State = 0;
+            obj_map.Materials[?mat_key]++;
+        }
+    }
     var poses = 0;
     for (var d = 0; d &lt; 12; d++) {
         var xt = xx + hex_ddx(xx, yy, d);
@@ -75,7 +91,7 @@ if (move) {
     for (var d = 0; d &lt; 12; d++) {
         var xt = xx + hex_ddx(xx, yy, d);
         var yt = yy + hex_ddy(d);
-        if (obj_map.Grid[#xt,yt] == 2) {
+        if (obj_map.Grid[#xt,yt] == 2 &amp;&amp; obj_map.VisGrid[#xt,yt] == 2) {
             if (pos == 0) {
                 xx = xt;
                 yy = yt;
@@ -93,7 +109,7 @@ XT = xx * obj_map.CellW + obj_map.CellSize * (yy % 2) + obj_map.CellSize;
 YT = yy * obj_map.CellH2 + obj_map.CellH;
 
 if (point_distance(XX, YY, XT, YT) &lt; obj_map.CellH) {
-    //move = true;
+    move = true;
 } else {
 }
     var step_dir = 0.000125 * delta_time;

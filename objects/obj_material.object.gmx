@@ -41,6 +41,10 @@ orbit = true;
 xt = undefined;
 yt = undefined;
 
+Radius = obj_map.CellH * 1.5;
+
+CreepTarget = noone;
+
 </string>
           </argument>
         </arguments>
@@ -91,14 +95,22 @@ angle += angle_spd;
           <argument>
             <kind>1</kind>
             <string>
-var xp = getPosX(xx, yy);
-var yp = getPosY(xx, yy);
+var xp = xx * obj_map.CellW + obj_map.CellSize * (yy % 2) + obj_map.CellSize;
+var yp = yy * obj_map.CellH2 + obj_map.CellH;
 
-var l = obj_map.CellH * obj_map.Scale * 1.5;
+if (CreepTarget == noone) {
+    x = xp;
+    y = yp;
+} else {
+    x += (CreepTarget.x - x) / 20;
+    y += (CreepTarget.y - y) / 20;
+}
+
+var l = Radius * obj_map.Scale;
 
 var cos_pitch = lengthdir_x(1, pitch);
 
-draw_sprite_ext(spr_material, 0, xp + lengthdir_x(l, dir) * cos_pitch, yp + lengthdir_y(l, pitch), 1, 1, angle, c_white, 1.0);
+draw_sprite_ext(spr_material, 0, (xp - obj_map.PosX) * obj_map.Scale + room_width / 2 + lengthdir_x(l, dir) * cos_pitch, (yp - obj_map.PosY) * obj_map.Scale + room_height / 2 + lengthdir_y(l, pitch), 1, 1, angle, c_white, 1.0);
 
 </string>
           </argument>
