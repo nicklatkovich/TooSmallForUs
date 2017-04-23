@@ -26,8 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>
-xx = room_width / 2 - 96;
-yy = room_height / 2 - 48;
+xx = AppSurf.Width / 2 - 96;
+yy = AppSurf.Height / 2 - 48;
 
 </string>
           </argument>

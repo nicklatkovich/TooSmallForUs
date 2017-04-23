@@ -26,8 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>
-xx = room_width / 2 - 64;
-yy = room_height / 2 - 32;
+xx = AppSurf.Width / 2 - 64;
+yy = AppSurf.Height / 2 - 32;
 
 show_debug_message("Portal Breafing Creating");
 

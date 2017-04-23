@@ -110,7 +110,7 @@ var l = Radius * obj_map.Scale;
 
 var cos_pitch = lengthdir_x(1, pitch);
 
-draw_sprite_ext(spr_material, 0, (xp - obj_map.PosX) * obj_map.Scale + room_width / 2 + lengthdir_x(l, dir) * cos_pitch, (yp - obj_map.PosY) * obj_map.Scale + room_height / 2 + lengthdir_y(l, pitch), 1, 1, angle, c_white, 1.0);
+draw_sprite_ext(spr_material, 0, (xp - obj_map.PosX) * obj_map.Scale + AppSurf.Width / 2 + lengthdir_x(l, dir) * cos_pitch, (yp - obj_map.PosY) * obj_map.Scale + AppSurf.Height / 2 + lengthdir_y(l, pitch), 1, 1, angle, c_white, 1.0);
 
 </string>
           </argument>

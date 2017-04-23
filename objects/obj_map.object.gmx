@@ -48,8 +48,8 @@ Drag = false;
 
 Materials = ds_map_create( );
 
-Width = floor(room_width / CellW - 0.5);
-Height = floor(room_height / CellH2);
+Width = floor(AppSurf.Width / CellW - 0.5);
+Height = floor(AppSurf.Height / CellH2);
 Width = 24;//floor(room_width / CellW - 0.5);
 Height = 24;//floor(room_height / CellH2);
 
@@ -206,6 +206,7 @@ if (mouse_check_button(mb_right)) {
 
 if (mouse_wheel_down( )) {
     var new_scale = TScale / 1.3;
+    new_scale = max(0.6, new_scale);
     if (PlanetInfo) {
         PlanetInfo = false;
         NearestI = undefined;
@@ -214,10 +215,10 @@ if (mouse_wheel_down( )) {
         }
         new_scale = 1;
     } else {
-        var xx = PosX + (mouse_x - room_width / 2) / Scale;
-        var yy = PosY + (mouse_y - room_height / 2) / Scale;
-        TPosX = xx - (mouse_x - room_width / 2) / new_scale;
-        TPosY = yy - (mouse_y - room_height / 2) / new_scale;
+        var xx = PosX + (mouse_x - AppSurf.Width / 2) / Scale;
+        var yy = PosY + (mouse_y - AppSurf.Height / 2) / Scale;
+        TPosX = xx - (mouse_x - AppSurf.Width / 2) / new_scale;
+        TPosY = yy - (mouse_y - AppSurf.Height / 2) / new_scale;
     }
     TScale = new_scale;
     if (breaf != noone) {
@@ -229,17 +230,17 @@ if (mouse_wheel_down( )) {
 }
 if (mouse_wheel_up( )) {
     var new_scale = TScale * 1.3;
-    var xx = PosX + (mouse_x - room_width / 2) / Scale;
-    var yy = PosY + (mouse_y - room_height / 2) / Scale;
-    TPosX = xx - (mouse_x - room_width / 2) / new_scale;
-    TPosY = yy - (mouse_y - room_height / 2) / new_scale;
+    var xx = PosX + (mouse_x - AppSurf.Width / 2) / Scale;
+    var yy = PosY + (mouse_y - AppSurf.Height / 2) / Scale;
+    TPosX = xx - (mouse_x - AppSurf.Width / 2) / new_scale;
+    TPosY = yy - (mouse_y - AppSurf.Height / 2) / new_scale;
     TScale = new_scale;
 }
 
-xs = floor(max(0, (PosX - room_width / 2 / Scale) / CellW - 0.5 - 2));
-xf = ceil(min(Width, (PosX + room_width / 2 / Scale) / CellW + 2));
-ys = floor(max(0, (PosY - room_height / 2 / Scale) / CellH2 - 2));
-yf = ceil(min(Height, (PosY + room_height / 2 / Scale) / CellH2 + 2));
+xs = floor(max(0, (PosX - AppSurf.Width / 2 / Scale) / CellW - 0.5 - 2));
+xf = ceil(min(Width, (PosX + AppSurf.Width / 2 / Scale) / CellW + 2));
+ys = floor(max(0, (PosY - AppSurf.Height / 2 / Scale) / CellH2 - 2));
+yf = ceil(min(Height, (PosY + AppSurf.Height / 2 / Scale) / CellH2 + 2));
 
 if (mouse_check_button_pressed(mb_left)) {
     if (is_undefined(NearestI) == false) {
@@ -348,8 +349,8 @@ Scale += (TScale - Scale) / 10;
 background_xscale[0] = Scale / 3;
 background_yscale[0] = Scale / 3;
 
-background_x[0] = room_width / 2 - Scale / 3 * background_width[0];
-background_y[0] = room_height / 2 - Scale / 3 * background_height[0];
+background_x[0] = AppSurf.Width / 2 - Scale / 3 * background_width[0];
+background_y[0] = AppSurf.Height / 2 - Scale / 3 * background_height[0];
 
 </string>
           </argument>
@@ -432,7 +433,7 @@ draw_set_font(font24);
           <argument>
             <kind>1</kind>
             <string>
-var surf = surface_create(room_width, room_height);
+var surf = surface_create(AppSurf.Width, AppSurf.Height);
 surface_set_target(surf);
 draw_clear_alpha(c_black, 1);
 surface_reset_target( );
@@ -450,8 +451,8 @@ if (Scale &gt;= 4 &amp;&amp; PlanetInfo == false) {
                // if (VisGrid[#i,j] == 2) {
                     var xx = getPosX(i, j) + PosX * Scale// (i * obj_map.CellW + obj_map.CellSize * (j % 2) + obj_map.CellSize) * obj_map.Scale;
                     var yy = getPosY(i, j) + PosY * Scale// (j * obj_map.CellH2 + obj_map.CellH) * obj_map.Scale;
-                    var cam_x = PosX * Scale + room_width / 2;
-                    var cam_y = PosY * Scale + room_height / 2;
+                    var cam_x = PosX * Scale + AppSurf.Width / 2;
+                    var cam_y = PosY * Scale + AppSurf.Height / 2;
                     var dist = point_distance(cam_x, cam_y, xx, yy);
                     if (is_undefined(NearestI) || MinDist &gt; dist) {
                         NearestI = i;

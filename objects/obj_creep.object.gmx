@@ -180,7 +180,7 @@ if (State == 1) {
     cl = c_olive;
 }
 draw_set_color(cl);
-draw_circle((XX - obj_map.PosX) * obj_map.Scale + room_width / 2, (YY - obj_map.PosY) * obj_map.Scale + room_height / 2, obj_map.CellH / 8 * obj_map.Scale, false);
+draw_circle((XX - obj_map.PosX) * obj_map.Scale + AppSurf.Width / 2, (YY - obj_map.PosY) * obj_map.Scale + AppSurf.Height / 2, obj_map.CellH / 8 * obj_map.Scale, false);
 
 </string>
           </argument>

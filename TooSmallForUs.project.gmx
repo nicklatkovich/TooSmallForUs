@@ -50,8 +50,10 @@
     <object>objects\obj_planetGenerator</object>
     <object>objects\obj_breafBuild</object>
     <object>objects\obj_material</object>
+    <object>objects\AppSurf</object>
   </objects>
   <rooms name="rooms">
+    <room>rooms\rm_init</room>
     <room>rooms\room0</room>
   </rooms>
   <help>
