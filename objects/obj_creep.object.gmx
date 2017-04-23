@@ -65,17 +65,42 @@ State = 0;
 if (move) {
     var mat_key = xx * obj_map.Height + yy;
     if (State == 0) {
-        if (obj_map.Materials[?mat_key] &gt; 0) {
+        var need = 0;
+        for (var d = 0; d &lt; 12; d += 2) {
+            var x1 = xx + hex_ddx(xx, yy, d);
+            var y1 = yy + hex_ddy(d);
+            if (obj_map.Grid[#x1,y1] != 2) {
+                var key = xx * obj_map.Height * 12 + yy * 12 + d;
+                if (ds_map_exists(obj_map.BuildProgress, key)) {
+                    need += obj_map.BuildProgress[?key]
+                }
+            }
+        }
+        if (obj_map.Materials[?mat_key] &gt; need) {
             State = 1;
             obj_map.Materials[?mat_key]--;
             if (is_undefined(obj_map.NearestI) == false &amp;&amp; obj_map.NearestI == xx &amp;&amp; obj_map.NearestJ == yy) {
-                
+                // TODO: Draw the grabbing
             }
         }
     } else if (State == 1) {
-        if (obj_map.Materials[?mat_key] == 0) {
+        var need = 0;
+        for (var d = 0; d &lt; 12; d += 2) {
+            var x1 = xx + hex_ddx(xx, yy, d);
+            var y1 = yy + hex_ddy(d);
+            if (obj_map.Grid[#x1,y1] != 2) {
+                var key = xx * obj_map.Height * 12 + yy * 12 + d;
+                if (ds_map_exists(obj_map.BuildProgress, key)) {
+                    need += obj_map.BuildProgress[?key]
+                }
+            }
+        }
+        if (obj_map.Materials[?mat_key] &lt; need) {
             State = 0;
             obj_map.Materials[?mat_key]++;
+            if (is_undefined(obj_map.NearestI) == false &amp;&amp; obj_map.NearestI == xx &amp;&amp; obj_map.NearestJ == yy) {
+                // TODO: Draw the stop drawing
+            }
         }
     }
     var poses = 0;
