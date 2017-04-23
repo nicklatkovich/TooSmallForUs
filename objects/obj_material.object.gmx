@@ -37,6 +37,10 @@ angle_spd = (random(0.5) + 0.5) * choose(1, -1);
 xx = undefined;
 yy = undefined;
 
+orbit = true;
+xt = undefined;
+yt = undefined;
+
 </string>
           </argument>
         </arguments>

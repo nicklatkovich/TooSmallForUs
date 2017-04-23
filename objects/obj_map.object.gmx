@@ -57,6 +57,7 @@ Grid = ds_grid_create(Width, Height);
 ds_grid_clear(Grid, 0);
 
 Builds = ds_map_create( );
+BuildProgress = ds_map_create( );
 
 VisGrid = ds_grid_create(Width, Height);
 ds_grid_clear(VisGrid, 0);
@@ -251,14 +252,19 @@ if (mouse_check_button_pressed(mb_left)) {
                     var d = (dir + 30) div 60 * 2 mod 12;
                     if (Grid[#i + hex_ddx(i, j, d),j + hex_ddy(d)] != 2) {
                         var key = i * Height * 12 + j * 12 + d;
-                        if (ds_map_exists(Builds, key)) {
-                            if (Builds[?key] == "House") {
-                                Builds[?key] = "Null";
-                            } else {
-                                Builds[?key] = "House";
-                            }
-                        } else {
+                        if (ds_map_exists(Builds, key) == false) {
                             Builds[?key] = "House";
+                            BuildProgress[?key] = 5;
+                        } else {
+                            var mat_key = i * Height + j;
+                            if (BuildProgress[?key] &gt; 0 &amp;&amp; Materials[?mat_key] &gt; 0) {
+                                BuildProgress[?key]--;
+                                Materials[?mat_key]--;
+                                with (obj_material) {
+                                    instance_destroy( );
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -468,15 +474,29 @@ for (var i = xs; i &lt; xf; i++) {
                                     var dir = point_direction(xx, yy, getPosX(x1, y1), getPosY(x1, y1));
                                     var key = i * Height * 12 + j * 12 + d;
                                     var spr = noone;
+                                    var img = 0;
+                                    var progress = undefined;
+                                    var max_progress = undefined;
                                     if (ds_map_exists(Builds, key)) {
                                         switch (Builds[?key]) {
-                                        case "House": spr = spr_house; break;
+                                        case "House":
+                                            spr = spr_house;
+                                            progress = BuildProgress[?key];
+                                            if (progress &gt; 0) {
+                                                img = 1;
+                                                max_progress = 5;
+                                            }
+                                            break;
                                         case "Null": spr = spr_buildPlace; break;
                                         }
                                     } else {
                                         spr = spr_buildPlace;
                                     }
-                                    draw_sprite_ext(spr, 0, xx + lengthdir_x(CellH * Scale, dir), yy + lengthdir_y(CellH * Scale, dir), CellH * Scale / 256, CellH * Scale / 256, dir, c_white, 1.0);
+                                    draw_sprite_ext(spr, img, xx + lengthdir_x(CellH * Scale, dir), yy + lengthdir_y(CellH * Scale, dir), CellH * Scale / 256, CellH * Scale / 256, dir, c_white, 1.0);
+                                    if (is_undefined(max_progress) == false) {
+                                        draw_set_color(c_red);
+                                        draw_text(xx + lengthdir_x(CellH * Scale * 1.25, dir), yy + lengthdir_y(CellH * Scale * 1.25, dir), string(max_progress - progress) + "/" + string(max_progress));
+                                    }
                                 }
                             }
                         }
