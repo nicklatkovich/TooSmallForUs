@@ -175,7 +175,11 @@ obj_map.TPosY = (y - room_height / 2 / obj_map.Scale);
           <argument>
             <kind>1</kind>
             <string>
-draw_set_color(c_red);
+var cl = c_red;
+if (State == 1) {
+    cl = c_olive;
+}
+draw_set_color(cl);
 draw_circle((XX - obj_map.PosX) * obj_map.Scale + room_width / 2, (YY - obj_map.PosY) * obj_map.Scale + room_height / 2, obj_map.CellH / 8 * obj_map.Scale, false);
 
 </string>
