@@ -35,6 +35,10 @@
     <shader type="GLSLES">shaders\glsl_earth.shader</shader>
     <shader type="GLSLES">shaders\glsl_sh.shader</shader>
   </shaders>
+  <fonts name="fonts">
+    <font>fonts\font24</font>
+    <font>fonts\font12</font>
+  </fonts>
   <objects name="objects">
     <object>objects\obj_map</object>
     <object>objects\obj_creep</object>

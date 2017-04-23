@@ -340,6 +340,8 @@ Scale += (TScale - Scale) / 10;
           <argument>
             <kind>1</kind>
             <string>
+draw_set_font(font12);
+
 draw_set_colour(c_black);
 draw_set_alpha(0.5);
 draw_rectangle(0, 0, 64, 96, false);
@@ -370,6 +372,9 @@ draw_set_colour(c_white);
 draw_set_alpha(1.0);
 draw_text(0, 0, FPSOut);
 */
+
+draw_set_font(font24);
+
 </string>
           </argument>
         </arguments>
@@ -500,6 +505,10 @@ for (var i = xs; i &lt; xf; i++) {
                                 }
                             }
                         }
+                        if (point_distance(mouse_x, mouse_y, xx, yy) &lt; CellH * Scale) {
+                            draw_set_color(c_green);
+                            draw_text(xx + CellH * Scale, yy - CellH * Scale, Materials[?i * Height + j]);
+                        } 
                     } else {
                         d3d_transform_add_rotation_z(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 1000);
                         d3d_transform_add_rotation_x(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 2111);
