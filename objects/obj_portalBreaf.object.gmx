@@ -74,6 +74,7 @@ if (mouse_check_button_pressed(mb_left)) {
                 obj_map.Scale = 2.99;
                 obj_map.TScale = 1;
                 obj_map.breaf = noone;
+                obj_map.NearestI = undefined;
                 instance_destroy( );
             }
         }

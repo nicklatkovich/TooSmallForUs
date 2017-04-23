@@ -54,6 +54,8 @@ Height = 24;//floor(room_height / CellH2);
 Grid = ds_grid_create(Width, Height);
 ds_grid_clear(Grid, 0);
 
+Builds = ds_map_create( );
+
 VisGrid = ds_grid_create(Width, Height);
 ds_grid_clear(VisGrid, 0);
 
@@ -232,8 +234,32 @@ xf = ceil(min(Width, (PosX + room_width / 2 / Scale) / CellW + 2));
 ys = floor(max(0, (PosY - room_height / 2 / Scale) / CellH2 - 2));
 yf = ceil(min(Height, (PosY + room_height / 2 / Scale) / CellH2 + 2));
 
-if (breaf == noone) {
-    if (mouse_check_button_pressed(mb_left)) {
+if (mouse_check_button_pressed(mb_left)) {
+    if (is_undefined(NearestI) == false) {
+        for (var i = xs; i &lt; xf; i++) {
+            for (var j = ys; j &lt; yf; j++) {
+                var xx = getPosX(i, j);
+                var yy = getPosY(i, j);
+                var dist = point_distance(mouse_x, mouse_y, xx, yy);
+                if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2 &amp;&amp; dist &gt; CellH * Scale &amp;&amp; dist &lt; 1.5 * CellH * Scale) {
+                    var dir = point_direction(xx, yy, mouse_x, mouse_y);
+                    var d = (dir + 15) div 30 mod 12;
+                    if (Grid[#i + hex_ddx(i, j, d),j + hex_ddy(d)] != 2) {
+                        var key = i * Height * 12 + j * 12 + d;
+                        if (ds_map_exists(Builds, key)) {
+                            if (Builds[?key] == "House") {
+                                Builds[?key] = "Null";
+                            } else {
+                                Builds[?key] = "House";
+                            }
+                        } else {
+                            Builds[?key] = "House";
+                        }
+                    }
+                }
+            }
+        }
+    } else {
         for (var i = xs; i &lt; xf; i++) {
             for (var j = ys; j &lt; yf; j++) {
                 if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2 &amp;&amp; point_distance(mouse_x, mouse_y, getPosX(i, j), getPosY(i, j)) &lt; CellH * Scale) {
@@ -432,7 +458,17 @@ for (var i = xs; i &lt; xf; i++) {
                                 var y1 = j + hex_ddy(d);
                                 if (Grid[#x1,y1] != 2) {
                                     var dir = point_direction(xx, yy, getPosX(x1, y1), getPosY(x1, y1));
-                                    draw_sprite_ext(spr_buildPlace, 0, xx + lengthdir_x(CellH * Scale, dir), yy + lengthdir_y(CellH * Scale, dir), CellH * Scale / 256, CellH * Scale / 256, dir, c_white, 0.5);
+                                    var key = i * Height * 12 + j * 12 + d;
+                                    var spr = noone;
+                                    if (ds_map_exists(Builds, key)) {
+                                        switch (Builds[?key]) {
+                                        case "House": spr = spr_house; break;
+                                        case "Null": spr = spr_buildPlace; break;
+                                        }
+                                    } else {
+                                        spr = spr_buildPlace;
+                                    }
+                                    draw_sprite_ext(spr, 0, xx + lengthdir_x(CellH * Scale, dir), yy + lengthdir_y(CellH * Scale, dir), CellH * Scale / 256, CellH * Scale / 256, dir, c_white, 1.0);
                                 }
                             }
                         }
