@@ -32,6 +32,8 @@ surface_resize(application_surface, Width, Height);
 
 room_goto_next( );
 
+audio_play_sound(music, 10, true);
+
 </string>
           </argument>
         </arguments>

@@ -4,7 +4,9 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\music</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_initDron</sprite>
     <sprite>sprites\spr_close</sprite>

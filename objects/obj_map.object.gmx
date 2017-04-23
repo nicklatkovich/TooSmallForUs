@@ -320,7 +320,7 @@ if (mouse_check_button_pressed(mb_left)) {
 
 PosX += (TPosX - PosX) / 10;
 PosY += (TPosY - PosY) / 10;
-Scale += (TScale - Scale) / 10;
+Scale += (TScale - Scale) / 20;
 
 
 </string>
