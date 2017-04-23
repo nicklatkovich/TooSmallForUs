@@ -26,12 +26,17 @@
           <argument>
             <kind>1</kind>
             <string>
+PlanetsAvailable = 4;
+PlanetsUsed = 1;
+
 randomize( );
 
 CellSize = 64;
 CellW = CellSize * 2.0;
 CellH = sqrt(3.0) * CellSize / 2.0;
 CellH2 = CellH * 2.0;
+
+PlanetInfo = false;
 
 Drag = false;
 
@@ -124,6 +129,8 @@ TPosX = PosX;
 TPosY = PosY;
 TScale = Scale;
 
+ScalePrev = Scale;
+
 </string>
           </argument>
         </arguments>
@@ -187,6 +194,8 @@ if (mouse_check_button(mb_right)) {
 }
 
 if (mouse_wheel_down( )) {
+    PlanetInfo = false;
+    NearestI = undefined;
     var new_scale = Scale / 1.3;
     var xx = PosX + mouse_x / Scale;
     var yy = PosY + mouse_y / Scale;
@@ -217,7 +226,11 @@ if (breaf == noone) {
                         breaf = instance_create(0, 0, obj_portalBreaf);
                         SelX = i;
                         SelY = j;
-                    } else {
+                    } else if (VisGrid[#i,j] == 2) {
+                        PlanetInfo = true;
+                        NearestI = i;
+                        NearestJ = j;
+                    } else if (PlanetsAvailable &gt; PlanetsUsed) {
                         VisGrid[#i,j] = 2;
                         for (var d = 0; d &lt; 6; d++) {
                             var xx = i + hex_dx(i, j, d);
@@ -235,6 +248,7 @@ if (breaf == noone) {
                         }
                         i = xf;
                         j = yf;
+                        PlanetsUsed++;
                     }
                 }
             }
@@ -305,7 +319,38 @@ surface_set_target(surf);
 draw_clear_alpha(c_black, 1);
 surface_reset_target( );
 
-draw_set_color(c_green);
+if (Scale &gt;= 3 || PlanetInfo) {
+    if (ScalePrev &lt; 3 &amp;&amp; is_undefined(NearestI)) {
+        NearestI = undefined;
+        NearestJ = undefined;
+        MinDist = undefined;
+        XX = 0;
+        YY = 0;
+        for (var i = xs; i &lt; xf; i++) {
+            for (var j = ys; j &lt; yf; j++) {
+                if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2) {
+                   // if (VisGrid[#i,j] == 2) {
+                        var xx = getPosX(i, j) + PosX * Scale// (i * obj_map.CellW + obj_map.CellSize * (j % 2) + obj_map.CellSize) * obj_map.Scale;
+                        var yy = getPosY(i, j) + PosY * Scale// (j * obj_map.CellH2 + obj_map.CellH) * obj_map.Scale;
+                        var cam_x = PosX * Scale + room_width / 2;
+                        var cam_y = PosY * Scale + room_height / 2;
+                        var dist = point_distance(cam_x, cam_y, xx, yy);
+                        if (is_undefined(NearestI) || MinDist &gt; dist) {
+                            NearestI = i;
+                            NearestJ = j;
+                            MinDist = dist;
+                            XX = xx;
+                            YY = yy;
+                        }
+                   // }
+                }
+            }
+        }
+    }
+    TPosX = NearestI * obj_map.CellW + obj_map.CellSize * (NearestJ % 2) + obj_map.CellSize - room_width / 2.0 / Scale;
+    TPosY = NearestJ * obj_map.CellH2 + obj_map.CellH - room_height / 2.0 / Scale;
+    TScale = 3;
+}
 for (var i = xs; i &lt; xf; i++) {
     for (var j = ys; j &lt; yf; j++) {
         if (VisGrid[#i,j] &amp;&amp; Grid[#i,j] == 2) {
@@ -318,25 +363,27 @@ for (var i = xs; i &lt; xf; i++) {
                 draw_set_blend_mode(bm_normal);
                 surface_reset_target( );
             }
-            /*
-            draw_set_color(c_green);
-            draw_circle(xx, yy, CellH * Scale, false);
-            */
-            surface_set_target(obj_planetGenerator.Out);
-            draw_clear_alpha(c_black, 0);
-            draw_set_color(c_white);
-            d3d_set_culling(true);
-            random_set_seed(i * Width + j);
-            d3d_transform_add_rotation_z(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 1000);
-            d3d_transform_add_rotation_x(90);
-            //d3d_transform_add_scaling(0.2, 0.2, 0.2);
-            var sc = CellH * Scale / 512;
-            d3d_transform_add_scaling(sc, sc, sc);
-            d3d_transform_add_translation(xx, yy, 0);
-            d3d_draw_ellipsoid(-256, -256, -256, 256, 256, 256, surface_get_texture(obj_planetGenerator.Surf), 1, 1, floor(sqrt(Scale) * 16));
-            d3d_transform_set_identity( );
-            d3d_set_culling(false);
-            surface_reset_target( );
+            if (Scale &gt; 0.5) {
+                surface_set_target(obj_planetGenerator.Out);
+                draw_clear_alpha(c_black, 0);
+                draw_set_color(c_white);
+                d3d_set_culling(true);
+                random_set_seed(i * Width + j);
+                d3d_transform_add_rotation_z(current_time * random_range(-0.1, 0.1) + (i * Width + j) * 1000);
+                d3d_transform_add_rotation_x(90);
+                //d3d_transform_add_scaling(0.2, 0.2, 0.2);
+                var sc = CellH * Scale / 256;
+                d3d_transform_add_scaling(sc, sc, sc);
+                d3d_transform_add_translation(xx, yy, 0);
+                d3d_draw_ellipsoid(-256, -256, -256, 256, 256, 256, surface_get_texture(obj_planetGenerator.Surf), 1, 1, floor(sqrt(Scale) * 16));
+                d3d_transform_set_identity( );
+                d3d_set_culling(false);
+                surface_reset_target( );
+            } else {
+                random_set_seed(i * Width + j);
+                draw_set_color(make_colour_rgb(floor(random(1) * 256), floor(random(1) * 256), floor(random(1) * 256)));
+                draw_circle(xx, yy, CellH * Scale, false);
+            }
             
             if (VisGrid[#i,j] == 2) {
                 for (var d = 0; d &lt; 12; d++) {
@@ -351,13 +398,16 @@ for (var i = xs; i &lt; xf; i++) {
                 }
             }
 
-            shader_set(glsl_earth);
-            shader_set_uniform_f(obj_planetGenerator.u_clWater, random(1), random(1), random(1), 1);
-            shader_set_uniform_f(obj_planetGenerator.u_clBeach, random(1), random(1), random(1), 1);
-            shader_set_uniform_f(obj_planetGenerator.u_clForest, random(1), random(1), random(1), 1);
-            shader_set_uniform_f(obj_planetGenerator.u_clMount, random(1), random(1), random(1), 1);
-            draw_surface(obj_planetGenerator.Out, 0, 0);
-            shader_reset( );
+            if (Scale &gt; 0.5) {
+                random_set_seed(i * Width + j);
+                shader_set(glsl_earth);
+                shader_set_uniform_f(obj_planetGenerator.u_clWater, random(1), random(1), random(1), 1);
+                shader_set_uniform_f(obj_planetGenerator.u_clBeach, random(1), random(1), random(1), 1);
+                shader_set_uniform_f(obj_planetGenerator.u_clForest, random(1), random(1), random(1), 1);
+                shader_set_uniform_f(obj_planetGenerator.u_clMount, random(1), random(1), random(1), 1);
+                draw_surface(obj_planetGenerator.Out, 0, 0);
+                shader_reset( );
+            }
 
         }
     }
@@ -368,6 +418,8 @@ draw_surface(surf, 0, 0);
 shader_reset( );
 
 surface_free(surf);
+
+ScalePrev = Scale;
 
 </string>
           </argument>
