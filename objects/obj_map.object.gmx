@@ -322,6 +322,35 @@ Scale += (TScale - Scale) / 10;
         </arguments>
       </action>
     </event>
+    <event eventtype="8" enumb="76">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+background_xscale[0] = Scale / 3;
+background_yscale[0] = Scale / 3;
+
+background_x[0] = room_width / 2 - Scale / 3 * background_width[0];
+background_y[0] = room_height / 2 - Scale / 3 * background_height[0];
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
